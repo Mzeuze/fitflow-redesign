@@ -1,30 +1,59 @@
-# High-Level Architecture
+# FitFlow Reference Architecture
 
-![FitFlow architecture](architecture.png)
+![FitFlow Reference Architecture](architecture.png)
 
-## Critical flows
+The architecture is organized into five horizontal layers so responsibilities remain clear and independently scalable.
 
-### Personalized workout plan
-Client -> Cognito -> Go Workout API -> PostgreSQL -> FastAPI AI -> PostgreSQL/Redis -> Client
+## 1. Experience Layer
+- Android App: Jetpack Compose
+- iOS App: SwiftUI
+- Shared Mobile Core: Kotlin Multiplatform
+- Web App: React + TypeScript
 
-### Social sharing
-Client -> Go Social API -> PostgreSQL -> Redis/WebSocket -> Authorized users / push provider
+## 2. Access & Identity Layer
+- AWS Cognito for authentication and user management
+- API Gateway for request routing and throttling
+- CDN / WAF for edge delivery and protection
+- Rate limiting for abuse protection
 
-### Nutrition tracking
-Camera -> private object storage -> Go Nutrition API -> FastAPI vision -> user confirmation -> PostgreSQL -> Client
+## 3. Core Platform Services
+Go-based services handle the main product logic:
+- User & Profile Service
+- Workout Planning Service
+- Nutrition Service
+- Social & Challenge Service
+- Notification Service
+- Integration Adapter Service
 
-## Security
+## 4. Intelligence & Event Layer
+- Python + FastAPI AI service
+- Recommendation engine
+- Meal image analysis
+- Event bus / asynchronous jobs
+- WebSocket hub for live updates
 
-- OIDC/OAuth 2.0 with PKCE
-- TLS in transit and encryption at rest
-- JWT verification and least-privilege authorization
-- Consent, export/deletion workflows and audit logging
-- Secrets stored outside source control
+## 5. Data & External Systems Layer
+- PostgreSQL as the primary database
+- Redis for caching and ephemeral state
+- Object storage for meal images and other files
+- Apple Health / Health Connect
+- Payment gateway
+- Email / push provider
 
-## Scalability
+## Key User Flows
 
-- Stateless Go API instances behind a load balancer
-- Independently scaled AI inference service
-- PostgreSQL indexes/replicas where justified
-- Redis cache for hot data
-- WebSocket layer for connected clients
+### Personalized Workout Plan
+User -> Workout Service -> AI Recommendation -> PostgreSQL -> Plan Returned
+
+### Social Challenge Update
+User -> Social Service -> Event Bus -> WebSocket Hub -> Connected Users
+
+### Meal Logging
+User -> Nutrition Service -> Object Storage -> AI Analysis -> Nutrition Record
+
+## Cross-Cutting Concerns
+- OAuth 2.0 / OpenID Connect security
+- Audit logging
+- Monitoring and alerting
+- Privacy and consent controls
+- Stateless horizontal scaling
