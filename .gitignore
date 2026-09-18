@@ -1,0 +1,43 @@
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Node / React
+node_modules/
+dist/
+build/
+.next/
+
+# Kotlin / Android
+.gradle/
+.idea/
+*.iml
+local.properties
+**/build/
+
+# iOS / macOS
+.DS_Store
+DerivedData/
+Pods/
+
+# Python / FastAPI
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Go
+*.exe
+*.out
+vendor/
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Secrets
+*.key
+*.pem
+secrets/
